@@ -1,0 +1,77 @@
+{
+  "name": "@internetarchive/metadata-service",
+  "version": "0.0.1",
+  "description": "A service for fetching metadata about items in the Internet Archive",
+  "license": "AGPL-3.0-only",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "start": "concurrently --kill-others --names tsc,web-dev-server \"npm run tsc:watch\" \"web-dev-server --app-index demo/index.html --node-resolve --open --watch\"",
+    "tsc:watch": "tsc --watch",
+    "docs": "typedoc ./index.ts",
+    "prepare": "tsc",
+    "lint:eslint": "eslint --ext .ts,.html . --ignore-path .gitignore",
+    "format:eslint": "eslint --ext .ts,.html . --fix --ignore-path .gitignore",
+    "lint:prettier": "prettier \"**/*.js\" \"**/*.ts\" --check --ignore-path .gitignore",
+    "format:prettier": "prettier \"**/*.js\" \"**/*.ts\" --write --ignore-path .gitignore",
+    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "format": "npm run format:eslint && npm run format:prettier",
+    "circular": "madge --circular --extensions ts .",
+    "test": "tsc && npm run lint && npm run circular && web-test-runner --coverage",
+    "test:watch": "web-test-runner --watch",
+    "codecov": "npx codecov"
+  },
+  "devDependencies": {
+    "@open-wc/eslint-config": "^4.2.0",
+    "@open-wc/testing": "^2.0.0",
+    "@types/node": "13.11.1",
+    "@typescript-eslint/eslint-plugin": "^4.16.1",
+    "@typescript-eslint/parser": "^4.16.1",
+    "@web/dev-server": "^0.0.12",
+    "@web/test-runner": "^0.13.23",
+    "concurrently": "^5.1.0",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^6.11.0",
+    "husky": "^1.0.0",
+    "lint-staged": "^10.0.0",
+    "lit-element": "^2.4.0",
+    "lit-html": "^1.3.0",
+    "madge": "^3.12.0",
+    "prettier": "^2.0.4",
+    "tslib": "^1.14.1",
+    "typedoc": "^0.20.29",
+    "typescript": "^4.2.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@open-wc/eslint-config",
+      "eslint-config-prettier"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "arrowParens": "avoid"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "@internetarchive/field-parsers": "^0.1.3",
+    "@internetarchive/result-type": "^0.0.1",
+    "decorator-cache-getter": "^1.0.0",
+    "typescript-memoize": "^1.1.0"
+  }
+}
