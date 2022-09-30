@@ -259,6 +259,7 @@ export class Metadata {
       : undefined;
   }
 
+  /** Prevents being generally seen in the search engine */
   @Memoize() get noindex(): BooleanField | undefined {
     return this.rawMetadata?.noindex
       ? new BooleanField(this.rawMetadata.noindex)
