@@ -127,6 +127,12 @@ export class Metadata {
       : undefined;
   }
 
+  @Memoize() get collection_layout(): StringField | undefined {
+    return this.rawMetadata?.collection_layout
+      ? new StringField(this.rawMetadata.collection_layout)
+      : undefined;
+  }
+
   @Memoize() get date(): DateField | undefined {
     return this.rawMetadata?.date
       ? new DateField(this.rawMetadata.date)
