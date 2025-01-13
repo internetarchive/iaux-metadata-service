@@ -57,7 +57,7 @@ export class AppRoot extends LitElement {
               <td>${key}</td>
               <td>${unsafeHTML(rawMetadata[key])}</td>
             </tr>
-          `
+          `,
         )}
       </table>
     `;

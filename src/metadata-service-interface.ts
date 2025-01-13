@@ -10,7 +10,7 @@ export interface MetadataServiceInterface {
    * @returns {Promise<Result<MetadataResponse, MetadataServiceError>>}
    */
   fetchMetadata(
-    identifier: string
+    identifier: string,
   ): Promise<Result<MetadataResponse, MetadataServiceError>>;
 
   /**
@@ -46,6 +46,6 @@ export interface MetadataServiceInterface {
    */
   fetchMetadataValue<T>(
     identifier: string,
-    keypath: string
+    keypath: string,
   ): Promise<Result<T, MetadataServiceError>>;
 }

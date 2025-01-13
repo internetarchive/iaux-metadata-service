@@ -16,7 +16,7 @@ describe('MetadataService', () => {
   it('can request metadata when requested', async () => {
     class MockMetadataBackend implements MetadataBackendInterface {
       async fetchMetadata(
-        identifier: string
+        identifier: string,
       ): Promise<Result<MetadataResponse, MetadataServiceError>> {
         const responseGenerator = new MockResponseGenerator();
         const mockResponse =
@@ -36,7 +36,7 @@ describe('MetadataService', () => {
       response: any;
       async fetchMetadata(
         identifier: string,
-        keypath?: string
+        keypath?: string,
       ): Promise<Result<any, MetadataServiceError>> {
         return {
           success: {
@@ -55,7 +55,7 @@ describe('MetadataService', () => {
 
       let result = await service.fetchMetadataValue<typeof expectedResult>(
         'foo',
-        'metadata'
+        'metadata',
       );
       expect(result.success).to.equal(expectedResult);
 
@@ -64,7 +64,7 @@ describe('MetadataService', () => {
 
       result = await service.fetchMetadataValue<typeof expectedResult>(
         'foo',
-        'metadata'
+        'metadata',
       );
       expect(result.success).to.equal(expectedResult);
       expect(result.success.foo).to.equal('bar');
@@ -74,7 +74,7 @@ describe('MetadataService', () => {
   it('returns an error result if the item is not found', async () => {
     class MockSearchBackend implements MetadataBackendInterface {
       async fetchMetadata(
-        identifier: string
+        identifier: string,
       ): Promise<Result<MetadataResponse, MetadataServiceError>> {
         // this is unfortunate.. instead of getting an http 404 error,
         // we get an empty JSON object when an item is not found
@@ -91,18 +91,18 @@ describe('MetadataService', () => {
     const valueResult = await service.fetchMetadataValue('foo', 'metadata');
     expect(valueResult.error).to.not.equal(undefined);
     expect(valueResult.error?.type).to.equal(
-      MetadataServiceErrorType.itemNotFound
+      MetadataServiceErrorType.itemNotFound,
     );
   });
 
   it('returns the network error if one occurs', async () => {
     class MockSearchBackend implements MetadataBackendInterface {
       async fetchMetadata(
-        identifier: string
+        identifier: string,
       ): Promise<Result<MetadataResponse, MetadataServiceError>> {
         const error = new MetadataServiceError(
           MetadataServiceErrorType.networkError,
-          'network error'
+          'network error',
         );
         return { error };
       }
@@ -113,14 +113,14 @@ describe('MetadataService', () => {
     const metadataResult = await service.fetchMetadata('foo');
     expect(metadataResult.error).to.not.equal(undefined);
     expect(metadataResult.error?.type).to.equal(
-      MetadataServiceErrorType.networkError
+      MetadataServiceErrorType.networkError,
     );
     expect(metadataResult.error?.message).to.equal('network error');
 
     const metadataValueResult = await service.fetchMetadataValue('foo', 'bar');
     expect(metadataValueResult.error).to.not.equal(undefined);
     expect(metadataValueResult.error?.type).to.equal(
-      MetadataServiceErrorType.networkError
+      MetadataServiceErrorType.networkError,
     );
     expect(metadataValueResult.error?.message).to.equal('network error');
   });
@@ -128,11 +128,11 @@ describe('MetadataService', () => {
   it('returns a decoding error if one occurs', async () => {
     class MockSearchBackend implements MetadataBackendInterface {
       async fetchMetadata(
-        identifier: string
+        identifier: string,
       ): Promise<Result<MetadataResponse, MetadataServiceError>> {
         const error = new MetadataServiceError(
           MetadataServiceErrorType.decodingError,
-          'decoding error'
+          'decoding error',
         );
         return { error };
       }
@@ -143,7 +143,7 @@ describe('MetadataService', () => {
     const metadataResult = await service.fetchMetadata('foo');
     expect(metadataResult.error).to.not.equal(undefined);
     expect(metadataResult.error?.type).to.equal(
-      MetadataServiceErrorType.decodingError
+      MetadataServiceErrorType.decodingError,
     );
     expect(metadataResult.error?.message).to.equal('decoding error');
   });

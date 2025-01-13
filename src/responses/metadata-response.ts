@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { File } from '../models/file';
-import { Metadata } from '../models/metadata';
-import { Review } from '../models/review';
-import { SpeechMusicASREntry } from '../models/speech-music-asr-entry';
+import {
+  File,
+  Metadata,
+  Review,
+  SpeechMusicASREntry,
+} from '@internetarchive/iaux-item-metadata';
 
 /**
  * The main top-level reponse when fetching Metadata

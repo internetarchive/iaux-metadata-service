@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { expect } from '@open-wc/testing';
 import { DefaultMetadataBackend } from '../src/backend/default-metadata-backend';
 import { MetadataServiceErrorType } from '../src/metadata-service-error';
@@ -62,8 +62,11 @@ describe('DefaultMetadataBackend', () => {
   it('appends the scope if provided', async () => {
     const fetchBackup = window.fetch;
     let urlCalled = '';
-    window.fetch = (url: RequestInfo): Promise<Response> => {
-      urlCalled = url.toString();
+    window.fetch = (
+      input: RequestInfo | URL,
+      init?: RequestInit | undefined,
+    ): Promise<Response> => {
+      urlCalled = input.toString();
       const response = new Response('boop');
       return new Promise(resolve => resolve(response));
     };
@@ -78,14 +81,14 @@ describe('DefaultMetadataBackend', () => {
 
   it('does not credentials for metadata endpoint', async () => {
     const fetchBackup = window.fetch;
-    let urlCalled: RequestInfo;
+    let urlCalled: RequestInfo | URL;
     let urlConfig: RequestInit | undefined;
     window.fetch = (
-      url: RequestInfo,
-      config?: RequestInit
+      input: RequestInfo | URL,
+      init?: RequestInit | undefined,
     ): Promise<Response> => {
-      urlCalled = url;
-      urlConfig = config;
+      urlCalled = input;
+      urlConfig = init;
       const response = new Response('boop');
       return new Promise(resolve => resolve(response));
     };

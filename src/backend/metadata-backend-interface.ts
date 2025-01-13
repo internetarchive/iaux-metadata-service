@@ -20,6 +20,6 @@ export interface MetadataBackendInterface {
    */
   fetchMetadata(
     identifier: string,
-    keypath?: string
+    keypath?: string,
   ): Promise<Result<any, MetadataServiceError>>;
 }

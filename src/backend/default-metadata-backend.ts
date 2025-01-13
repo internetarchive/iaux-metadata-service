@@ -49,7 +49,7 @@ export class DefaultMetadataBackend implements MetadataBackendInterface {
   /** @inheritdoc */
   async fetchMetadata(
     identifier: string,
-    keypath?: string
+    keypath?: string,
   ): Promise<Result<any, MetadataServiceError>> {
     const path = keypath ? `/${keypath}` : '';
     const url = `https://${this.baseUrl}/metadata/${identifier}${path}`;
@@ -71,7 +71,7 @@ export class DefaultMetadataBackend implements MetadataBackendInterface {
     url: string,
     options?: {
       requestOptions?: RequestInit;
-    }
+    },
   ): Promise<Result<any, MetadataServiceError>> {
     const finalUrl = new URL(url);
     if (this.requestScope) {
@@ -90,11 +90,11 @@ export class DefaultMetadataBackend implements MetadataBackendInterface {
         err instanceof Error
           ? err.message
           : typeof err === 'string'
-          ? err
-          : 'Unknown error';
+            ? err
+            : 'Unknown error';
       return this.getErrorResult(
         MetadataServiceErrorType.networkError,
-        message
+        message,
       );
     }
 
@@ -109,7 +109,7 @@ export class DefaultMetadataBackend implements MetadataBackendInterface {
         return this.getErrorResult(
           MetadataServiceErrorType.searchEngineError,
           error,
-          forensics
+          forensics,
         );
       } else {
         // success
@@ -120,11 +120,11 @@ export class DefaultMetadataBackend implements MetadataBackendInterface {
         err instanceof Error
           ? err.message
           : typeof err === 'string'
-          ? err
-          : 'Unknown error';
+            ? err
+            : 'Unknown error';
       return this.getErrorResult(
         MetadataServiceErrorType.decodingError,
-        message
+        message,
       );
     }
   }
@@ -132,7 +132,7 @@ export class DefaultMetadataBackend implements MetadataBackendInterface {
   private getErrorResult(
     errorType: MetadataServiceErrorType,
     message?: string,
-    details?: any
+    details?: any,
   ): Result<any, MetadataServiceError> {
     const error = new MetadataServiceError(errorType, message, details);
     const result = { error };

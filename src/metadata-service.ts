@@ -1,12 +1,12 @@
-import { MetadataResponse } from './responses/metadata-response';
+import type { Result } from '@internetarchive/result-type';
+import { DefaultMetadataBackend } from './backend/default-metadata-backend';
+import { MetadataBackendInterface } from './backend/metadata-backend-interface';
 import {
   MetadataServiceError,
   MetadataServiceErrorType,
 } from './metadata-service-error';
 import type { MetadataServiceInterface } from './metadata-service-interface';
-import type { Result } from '@internetarchive/result-type';
-import { DefaultMetadataBackend } from './backend/default-metadata-backend';
-import { MetadataBackendInterface } from './backend/metadata-backend-interface';
+import { MetadataResponse } from './responses/metadata-response';
 
 /**
  * The Metadata Service is responsible for taking the raw response provided by
@@ -14,7 +14,7 @@ import { MetadataBackendInterface } from './backend/metadata-backend-interface';
  */
 export class MetadataService implements MetadataServiceInterface {
   public static default: MetadataServiceInterface = new MetadataService(
-    new DefaultMetadataBackend()
+    new DefaultMetadataBackend(),
   );
 
   private backend: MetadataBackendInterface;
@@ -25,7 +25,7 @@ export class MetadataService implements MetadataServiceInterface {
 
   /** @inheritdoc */
   async fetchMetadata(
-    identifier: string
+    identifier: string,
   ): Promise<Result<MetadataResponse, MetadataServiceError>> {
     const rawResponse = await this.backend.fetchMetadata(identifier);
     if (rawResponse.error) {
@@ -45,7 +45,7 @@ export class MetadataService implements MetadataServiceInterface {
   /** @inheritdoc */
   async fetchMetadataValue<T>(
     identifier: string,
-    keypath: string
+    keypath: string,
   ): Promise<Result<T, MetadataServiceError>> {
     const result = await this.backend.fetchMetadata(identifier, keypath);
     if (result.error) {
