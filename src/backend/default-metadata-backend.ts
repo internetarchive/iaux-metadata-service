@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Result } from '@internetarchive/result-type';
-import { MetadataBackendInterface } from './metadata-backend-interface';
 import {
   MetadataServiceError,
   MetadataServiceErrorType,
 } from '../metadata-service-error';
+import { MetadataBackendInterface } from './metadata-backend-interface';
 
 /**
  * The DefaultSearchBackend performs a `window.fetch` request to archive.org
