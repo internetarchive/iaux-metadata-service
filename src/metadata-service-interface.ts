@@ -1,6 +1,6 @@
-import type { MetadataResponse } from './responses/metadata-response';
 import type { Result } from '@internetarchive/result-type';
 import type { MetadataServiceError } from './metadata-service-error';
+import type { MetadataResponse } from './responses/metadata-response';
 
 export interface MetadataServiceInterface {
   /**

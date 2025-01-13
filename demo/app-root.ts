@@ -3,16 +3,16 @@ import {
   CSSResult,
   customElement,
   html,
-  internalProperty,
   LitElement,
   query,
+  state,
   TemplateResult,
 } from 'lit-element';
-import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { nothing } from 'lit-html';
-import { MetadataResponse } from '../src/responses/metadata-response';
-import { MetadataServiceInterface } from '../src/metadata-service-interface';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html';
 import { MetadataService } from '../src/metadata-service';
+import { MetadataServiceInterface } from '../src/metadata-service-interface';
+import { MetadataResponse } from '../src/responses/metadata-response';
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
@@ -21,7 +21,7 @@ export class AppRoot extends LitElement {
   @query('#metadata-input')
   private metadataInput!: HTMLInputElement;
 
-  @internalProperty()
+  @state()
   private metadataResponse?: MetadataResponse;
 
   /** @inheritdoc */

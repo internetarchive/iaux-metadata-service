@@ -2,15 +2,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { expect } from '@open-wc/testing';
 
-import { MockResponseGenerator } from './mock-response-generator';
-import { MetadataResponse } from '../src/responses/metadata-response';
 import { Result } from '@internetarchive/result-type';
 import { MetadataBackendInterface } from '../src/backend/metadata-backend-interface';
+import { MetadataService } from '../src/metadata-service';
 import {
   MetadataServiceError,
   MetadataServiceErrorType,
 } from '../src/metadata-service-error';
-import { MetadataService } from '../src/metadata-service';
+import { MetadataResponse } from '../src/responses/metadata-response';
+import { MockResponseGenerator } from './mock-response-generator';
 
 describe('MetadataService', () => {
   it('can request metadata when requested', async () => {
