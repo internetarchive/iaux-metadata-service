@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export enum MetadataServiceErrorType {
   networkError = 'MetadataService.NetworkError',
   itemNotFound = 'MetadataService.ItemNotFound',
@@ -9,8 +8,10 @@ export enum MetadataServiceErrorType {
 export class MetadataServiceError extends Error {
   type: MetadataServiceErrorType;
 
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   details?: any;
 
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   constructor(type: MetadataServiceErrorType, message?: string, details?: any) {
     super(message);
     this.name = type;
