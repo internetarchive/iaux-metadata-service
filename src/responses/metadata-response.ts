@@ -1,9 +1,7 @@
-import {
-  File,
-  Metadata,
-  Review,
-  SpeechMusicASREntry,
-} from '@internetarchive/iaux-item-metadata';
+import { Metadata } from '@internetarchive/iaux-item-metadata';
+import { File } from '../models/file';
+import { Review } from '../models/review';
+import { SpeechMusicASREntry } from '../models/speech-music-asr-entry';
 
 /**
  * The main top-level reponse when fetching Metadata

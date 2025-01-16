@@ -26,6 +26,7 @@
     "codecov": "npx codecov"
   },
   "dependencies": {
+    "@internetarchive/field-parsers": "^0.1.4",
     "@internetarchive/iaux-item-metadata": "^1.0.3",
     "@internetarchive/result-type": "^0.0.1"
   },
