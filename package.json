@@ -1,6 +1,6 @@
 {
   "name": "@internetarchive/metadata-service",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A service for fetching metadata about items in the Internet Archive",
   "license": "AGPL-3.0-only",
   "main": "dist/index.js",
@@ -26,8 +26,10 @@
     "codecov": "npx codecov"
   },
   "dependencies": {
-    "@internetarchive/iaux-item-metadata": "^1.0.3",
-    "@internetarchive/result-type": "^0.0.1"
+    "@internetarchive/field-parsers": "^0.1.4",
+    "@internetarchive/iaux-item-metadata": "^1.0.4",
+    "@internetarchive/result-type": "^0.0.1",
+    "typescript-memoize": "^1.1.1"
   },
   "devDependencies": {
     "@open-wc/eslint-config": "^12.0.3",
