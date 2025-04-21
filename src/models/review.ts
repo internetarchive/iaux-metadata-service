@@ -17,6 +17,10 @@ export class Review {
     return this.rawValue.reviewer;
   }
 
+  get reviewer_itemname(): string | undefined {
+    return this.rawValue.reviewer_itemname;
+  }
+
   @Memoize() get reviewdate(): Date | undefined {
     return this.rawValue.reviewdate != null
       ? DateParser.shared.parseValue(this.rawValue.reviewdate)
