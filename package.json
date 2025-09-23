@@ -1,6 +1,6 @@
 {
   "name": "@internetarchive/metadata-service",
-  "version": "1.0.4",
+  "version": "1.0.5-webdev-7743.0",
   "description": "A service for fetching metadata about items in the Internet Archive",
   "license": "AGPL-3.0-only",
   "main": "dist/index.js",
