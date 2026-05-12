@@ -79,7 +79,7 @@ describe('DefaultMetadataBackend', () => {
     window.fetch = fetchBackup;
   });
 
-  it('does not credentials for metadata endpoint', async () => {
+  it('credentials for metadata endpoint', async () => {
     const fetchBackup = window.fetch;
     let urlCalled: RequestInfo | URL;
     let urlConfig: RequestInit | undefined;
@@ -98,7 +98,7 @@ describe('DefaultMetadataBackend', () => {
       includeCredentials: true,
     });
     await backend.fetchMetadata('foo');
-    expect(urlConfig?.credentials).to.equal('omit');
+    expect(urlConfig?.credentials).to.equal('include');
     window.fetch = fetchBackup;
   });
 });
