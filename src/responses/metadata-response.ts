@@ -6,6 +6,25 @@ import {
 } from '@internetarchive/iaux-item-metadata';
 
 /**
+ * A single alternate download location: a server and the directory on it that
+ * holds the item's files.
+ */
+export interface AlternateLocation {
+  server: string;
+  dir: string;
+}
+
+/**
+ * Alternate download locations for an item, beyond the primary `server`/`dir`.
+ * `servers` lists all known mirrors; `workable` is the subset currently
+ * reachable for downloads.
+ */
+export interface AlternateLocations {
+  servers: AlternateLocation[];
+  workable: AlternateLocation[];
+}
+
+/**
  * The main top-level reponse when fetching Metadata
  *
  * @export
@@ -43,6 +62,16 @@ export class MetadataResponse {
 
   readonly reviews?: Review[];
 
+  readonly alternate_locations?: AlternateLocations;
+
+  readonly clips?: Record<string, unknown>;
+
+  readonly plays?: Record<string, unknown>;
+
+  readonly simplelists?: Record<string, unknown>;
+
+  readonly solo?: boolean;
+
   /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   constructor(json: Record<string, any>) {
     this.rawResponse = json;
@@ -64,5 +93,10 @@ export class MetadataResponse {
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       (entry: Record<string, any>) => new Review(entry),
     );
+    this.alternate_locations = json.alternate_locations;
+    this.clips = json.clips;
+    this.plays = json.plays;
+    this.simplelists = json.simplelists;
+    this.solo = json.solo;
   }
 }
