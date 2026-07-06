@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@internetarchive/field-parsers": "^0.1.4",
-    "@internetarchive/iaux-item-metadata": "^1.1.0",
+    "@internetarchive/iaux-item-metadata": "1.3.0-beta.0",
     "@internetarchive/result-type": "^0.0.1",
     "typescript-memoize": "^1.1.1"
   },
