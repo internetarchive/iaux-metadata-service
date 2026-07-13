@@ -9,20 +9,20 @@ import {
  * A single alternate download location: a server and the directory on it that
  * holds the item's files.
  */
-export interface AlternateLocation {
+export type AlternateLocation = {
   server: string;
   dir: string;
-}
+};
 
 /**
  * Alternate download locations for an item, beyond the primary `server`/`dir`.
  * `servers` lists all known mirrors; `workable` is the subset currently
  * reachable for downloads.
  */
-export interface AlternateLocations {
+export type AlternateLocations = {
   servers: AlternateLocation[];
   workable: AlternateLocation[];
-}
+};
 
 /**
  * The main top-level reponse when fetching Metadata
