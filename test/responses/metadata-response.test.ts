@@ -44,7 +44,7 @@ describe('MetadataResponse', () => {
     expect(response.solo).to.be.true;
   });
 
-  it('leaves the new top-level fields undefined when absent', async () => {
+  it('leaves the top-level fields undefined when absent', async () => {
     const response = new MetadataResponse({ metadata: { identifier: 'foo' } });
     expect(response.alternate_locations).to.be.undefined;
     expect(response.clips).to.be.undefined;
