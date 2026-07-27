@@ -57,6 +57,17 @@ export class MockResponseGenerator {
       server: 'ia800201.us.archive.org',
       uniq: 162444403,
       workable_servers: ['ia800201.us.archive.org', 'ia600201.us.archive.org'],
+      alternate_locations: {
+        servers: [
+          { server: 'ia800201.us.archive.org', dir: '/27/items/foo' },
+          { server: 'ia600201.us.archive.org', dir: '/27/items/foo' },
+        ],
+        workable: [{ server: 'ia800201.us.archive.org', dir: '/27/items/foo' }],
+      },
+      clips: { '60|120': [1, 2, 3] },
+      plays: {},
+      simplelists: {},
+      solo: false,
     };
   }
 }

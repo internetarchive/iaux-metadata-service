@@ -1,6 +1,6 @@
 {
   "name": "@internetarchive/metadata-service",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "A service for fetching metadata about items in the Internet Archive",
   "license": "AGPL-3.0-only",
   "main": "dist/index.js",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@internetarchive/field-parsers": "^0.1.4",
-    "@internetarchive/iaux-item-metadata": "^1.1.0",
+    "@internetarchive/iaux-item-metadata": "^1.3.0",
     "@internetarchive/result-type": "^0.0.1",
     "typescript-memoize": "^1.1.1"
   },

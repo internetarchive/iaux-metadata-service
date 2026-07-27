@@ -1,4 +1,8 @@
 export { MetadataResponse } from './src/responses/metadata-response';
+export type {
+  AlternateLocation,
+  AlternateLocations,
+} from './src/responses/metadata-response';
 
 export {
   File,
