@@ -1,3 +1,5 @@
+import type { Metadata } from '@internetarchive/iaux-item-metadata';
+import type { MetadataFieldKey } from './metadata-field-key';
 import type { Result } from '@internetarchive/result-type';
 import type { MetadataServiceError } from './metadata-service-error';
 import type { MetadataResponse } from './responses/metadata-response';
@@ -48,4 +50,58 @@ export interface MetadataServiceInterface {
     identifier: string,
     keypath: string,
   ): Promise<Result<T, MetadataServiceError>>;
+
+  /**
+   * Fetch a single item metadata field, modeled as its `MetadataField` type.
+   *
+   * Like {@link fetchMetadataValue}, but hands back a constructed field rather
+   * than the raw value, so callers get its parsing and normalization instead of
+   * reimplementing them.
+   *
+   * This matters most for fields the API sends inconsistently. `collection` is
+   * an array on an item in several collections but a bare string on an item in
+   * one, so reading `[0]` off the raw value is wrong half the time, while
+   * `value` is the first entry either way.
+   *
+   * ```ts
+   * const result = await metadataService.fetchMetadataField(
+   *   'bra-bfr',
+   *   'collection',
+   * );
+   * result.success?.value; // 'kodi_archive'
+   * result.success?.values; // ['kodi_archive', 'community']
+   * ```
+   *
+   * The field name is any field `Metadata` declares, and the returned type
+   * follows from it, so a date comes back parsed:
+   *
+   * ```ts
+   * const added = await metadataService.fetchMetadataField(
+   *   'bra-bfr',
+   *   'addeddate',
+   * );
+   * added.success?.value; // Date
+   * ```
+   *
+   * A field `Metadata` doesn't declare isn't reachable here — add a typed
+   * getter there rather than working around it, so every caller shares one
+   * definition of a field's type. For anything that isn't an item metadata
+   * field (`files_count`, `server`, `files/0/name`), use
+   * {@link fetchMetadataValue}.
+   *
+   * A value the field's parser rejects leaves `value` undefined while
+   * `rawValue` keeps the original, and an empty array leaves `value` undefined
+   * too; `values.length` tells those apart.
+   *
+   * Errors match {@link fetchMetadataValue}. Note the API reports both an
+   * unknown identifier and an unknown field as a payload `error`, which
+   * surfaces as `searchEngineError` rather than `itemNotFound`.
+   *
+   * @param identifier
+   * @param field Name of a field declared on `Metadata`
+   */
+  fetchMetadataField<K extends MetadataFieldKey>(
+    identifier: string,
+    field: K,
+  ): Promise<Result<NonNullable<Metadata[K]>, MetadataServiceError>>;
 }
