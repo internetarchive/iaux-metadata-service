@@ -71,6 +71,104 @@ describe('MetadataService', () => {
     });
   });
 
+  describe('fetchMetadataField', () => {
+    class MockMetadataBackend implements MetadataBackendInterface {
+      response: any;
+      async fetchMetadata(
+        identifier: string,
+        keypath?: string,
+      ): Promise<Result<any, MetadataServiceError>> {
+        return { success: { result: this.response } };
+      }
+    }
+
+    function serviceReturning(response: any): MetadataService {
+      const backend = new MockMetadataBackend();
+      backend.response = response;
+      return new MetadataService(backend);
+    }
+
+    it('models a field the API sent as an array', async () => {
+      const service = serviceReturning(['kodi_archive', 'community']);
+
+      const result = await service.fetchMetadataField('foo', 'collection');
+      expect(result.success?.value).to.equal('kodi_archive');
+      expect(result.success?.values).to.deep.equal([
+        'kodi_archive',
+        'community',
+      ]);
+    });
+
+    it('models a field the API sent as a bare string', async () => {
+      // An item in a single collection gets a string rather than a list, which
+      // is the case that makes reading the raw value directly unsafe.
+      const service = serviceReturning('audio');
+
+      const result = await service.fetchMetadataField('foo', 'collection');
+      expect(result.success?.value).to.equal('audio');
+      expect(result.success?.values).to.deep.equal(['audio']);
+    });
+
+    it('casts according to the field, without being told which', async () => {
+      const service = serviceReturning('2018-08-13 10:08:32');
+
+      const result = await service.fetchMetadataField('foo', 'addeddate');
+      expect(result.success?.value).to.be.instanceOf(Date);
+      expect(result.success?.value?.getUTCFullYear()).to.equal(2018);
+    });
+
+    it('leaves an out-of-range enum value undefined but keeps the raw', async () => {
+      const service = serviceReturning('not-a-mediatype');
+
+      const result = await service.fetchMetadataField('foo', 'mediatype');
+      expect(result.success?.value).to.equal(undefined);
+      expect(result.success?.rawValue).to.equal('not-a-mediatype');
+    });
+
+    it('keeps an empty array distinguishable from a rejected value', async () => {
+      const service = serviceReturning([]);
+
+      const result = await service.fetchMetadataField('foo', 'collection');
+      expect(result.success?.value).to.equal(undefined);
+      expect(result.success?.values).to.deep.equal([]);
+    });
+
+    it('rejects a value that is not a scalar or array of scalars', async () => {
+      // Without this the field would still construct and String() would yield
+      // '[object Object]' inside a successful result.
+      const service = serviceReturning([{ reviewer: 'someone' }]);
+
+      const result = await service.fetchMetadataField('foo', 'collection');
+      expect(result.success).to.equal(undefined);
+      expect(result.error?.type).to.equal(
+        MetadataServiceErrorType.decodingError,
+      );
+    });
+
+    it('passes a backend error through', async () => {
+      // What an unknown identifier or field actually produces: the API returns
+      // a payload `error` key, which the backend maps to searchEngineError.
+      class FailingBackend implements MetadataBackendInterface {
+        async fetchMetadata(): Promise<Result<any, MetadataServiceError>> {
+          return {
+            error: new MetadataServiceError(
+              MetadataServiceErrorType.searchEngineError,
+              "Couldn't get part '/nope' of 'metadata' for item foo",
+            ),
+          };
+        }
+      }
+
+      const service = new MetadataService(new FailingBackend());
+      const result = await service.fetchMetadataField('foo', 'collection');
+      expect(result.success).to.equal(undefined);
+      expect(result.error?.type).to.equal(
+        MetadataServiceErrorType.searchEngineError,
+      );
+      expect(result.error?.message).to.contain("Couldn't get part");
+    });
+  });
+
   it('returns an error result if the item is not found', async () => {
     class MockSearchBackend implements MetadataBackendInterface {
       async fetchMetadata(
