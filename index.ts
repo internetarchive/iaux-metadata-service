@@ -9,7 +9,6 @@ export {
   Review,
   SpeechMusicASREntry,
 } from '@internetarchive/iaux-item-metadata';
-export type { MetadataFieldKey } from './src/metadata-field-key';
 
 export { DefaultMetadataBackend } from './src/backend/default-metadata-backend';
 export { MetadataService } from './src/metadata-service';

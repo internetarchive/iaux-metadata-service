@@ -10,6 +10,11 @@ import type {
  *
  * Derived from `Metadata` rather than listed here, so a field added there is
  * available without a matching change in this package.
+ *
+ * Internal on purpose. It's a fact about `Metadata`, so it belongs alongside
+ * `Metadata` in iaux-item-metadata; keeping it unexported here means moving it
+ * there later isn't a breaking change. Callers don't need the name to call
+ * `fetchMetadataField` with a field-name literal.
  */
 export type MetadataFieldKey = {
   [K in keyof Metadata]-?: NonNullable<
