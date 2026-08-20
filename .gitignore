@@ -2,6 +2,9 @@
 /.idea
 /.vscode
 
+## git worktrees for feature branches
+/.claude/worktrees/
+
 ## system files
 .DS_Store
 
