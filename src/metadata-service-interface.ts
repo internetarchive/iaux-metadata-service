@@ -1,5 +1,7 @@
-import type { Metadata } from '@internetarchive/iaux-item-metadata';
-import type { MetadataFieldKey } from './metadata-field-key';
+import type {
+  Metadata,
+  MetadataFieldKey,
+} from '@internetarchive/iaux-item-metadata';
 import type { Result } from '@internetarchive/result-type';
 import type { MetadataServiceError } from './metadata-service-error';
 import type { MetadataResponse } from './responses/metadata-response';
