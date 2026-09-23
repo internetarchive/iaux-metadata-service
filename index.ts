@@ -13,4 +13,12 @@ export {
 export { DefaultMetadataBackend } from './src/backend/default-metadata-backend';
 export { MetadataService } from './src/metadata-service';
 export { MetadataServiceError } from './src/metadata-service-error';
-export { MetadataServiceInterface } from './src/metadata-service-interface';
+export {
+  MetadataServiceInterface,
+  MetadataWriteResult,
+} from './src/metadata-service-interface';
+export { buildMetadataFieldPatch } from './src/metadata-patch';
+export type {
+  MetadataFieldValue,
+  MetadataPatchOperation,
+} from './src/metadata-patch';
