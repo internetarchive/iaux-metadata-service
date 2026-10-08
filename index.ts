@@ -12,7 +12,10 @@ export {
 
 export { DefaultMetadataBackend } from './src/backend/default-metadata-backend';
 export { MetadataService } from './src/metadata-service';
-export { MetadataServiceError } from './src/metadata-service-error';
+export {
+  MetadataServiceError,
+  MetadataServiceErrorType,
+} from './src/metadata-service-error';
 export {
   MetadataServiceInterface,
   MetadataWriteResult,
