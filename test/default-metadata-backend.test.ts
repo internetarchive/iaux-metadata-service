@@ -102,3 +102,69 @@ describe('DefaultMetadataBackend', () => {
     window.fetch = fetchBackup;
   });
 });
+
+describe('DefaultMetadataBackend writeMetadata', () => {
+  const fetchBackup = window.fetch;
+
+  afterEach(() => {
+    window.fetch = fetchBackup;
+  });
+
+  it('posts the patch as a form to the item endpoint', async () => {
+    let requestUrl = '';
+    let requestInit: RequestInit | undefined;
+    window.fetch = async (
+      input: RequestInfo | URL,
+      init?: RequestInit,
+    ): Promise<Response> => {
+      requestUrl = String(input);
+      requestInit = init;
+      return new Response('{ "success": true, "task_id": 7, "log": "x" }');
+    };
+
+    const backend = new DefaultMetadataBackend({ includeCredentials: true });
+    const patch = [{ op: 'replace' as const, path: '/title', value: 'New' }];
+    const result = await backend.writeMetadata('foo', 'metadata', patch);
+
+    expect(result.success?.task_id).to.equal(7);
+    expect(requestUrl).to.equal('https://archive.org/metadata/foo');
+    expect(requestInit?.method).to.equal('POST');
+    expect(requestInit?.credentials).to.equal('include');
+    const body = requestInit?.body as URLSearchParams;
+    expect(body.get('-target')).to.equal('metadata');
+    expect(JSON.parse(body.get('-patch') ?? '')).to.deep.equal(patch);
+  });
+
+  it('returns a writeError with MDAPI’s message when the write is rejected', async () => {
+    window.fetch = async (): Promise<Response> =>
+      new Response('{ "success": false, "error": "Authorization failed" }', {
+        status: 401,
+      });
+
+    const backend = new DefaultMetadataBackend();
+    const result = await backend.writeMetadata('foo', 'metadata', []);
+
+    expect(result.error?.type).to.equal(MetadataServiceErrorType.writeError);
+    expect(result.error?.message).to.equal('Authorization failed');
+  });
+
+  it('returns a writeError when MDAPI does not report success', async () => {
+    window.fetch = async (): Promise<Response> => new Response('{}');
+
+    const backend = new DefaultMetadataBackend();
+    const result = await backend.writeMetadata('foo', 'metadata', []);
+
+    expect(result.error?.type).to.equal(MetadataServiceErrorType.writeError);
+  });
+
+  it('returns a networkError when the request fails', async () => {
+    window.fetch = async (): Promise<Response> => {
+      throw new Error('offline');
+    };
+
+    const backend = new DefaultMetadataBackend();
+    const result = await backend.writeMetadata('foo', 'metadata', []);
+
+    expect(result.error?.type).to.equal(MetadataServiceErrorType.networkError);
+  });
+});
