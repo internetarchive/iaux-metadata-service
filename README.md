@@ -19,6 +19,24 @@ metadataResponse.metadata.collection.value // => 'some-collection'
 metadataResponse.metadata.collection.values // => ['some-collection', 'another-collection', 'more-collections']
 ```
 
+### Write Metadata
+
+Writes go through MDAPI as the logged-in user, so they need the viewer's archive.org cookies (`includeCredentials`). MDAPI applies a write through a queued catalog task. MDAPI reads replay pending tasks, so they show the change right away, but search and other caches built on MDAPI can lag it.
+
+```ts
+// Set one field. Reads the item's current metadata first and sends the
+// right add / replace / remove. An empty string or list removes the field.
+const result = await metadataService.updateMetadataField('some-identifier', 'subject', ['cats', 'dogs']);
+result.success // => { changed: true, taskId: 12345 }, or { changed: false } if it already had that value
+
+// Or send a JSON Patch yourself
+await metadataService.patchMetadata('some-identifier', [
+  { op: 'replace', path: '/title', value: 'A new title' },
+]);
+```
+
+Failed writes come back as a `MetadataServiceError` with type `writeError` and MDAPI's message.
+
 ## Metadata Values
 
 Internet Archive Metadata is expansive and nearly all metadata fields can be returned as either an array, string, or number.
