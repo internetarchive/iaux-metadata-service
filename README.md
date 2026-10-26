@@ -1,5 +1,7 @@
 # Internet Archive Metadata Service
 
+> Moved to [@internetarchive/elements](https://github.com/internetarchive/elements) (`src/services/metadata-service`). New work goes there.
+
 A service for retrieving metadata about items in the Internet Archive.
 
 ## Installation
